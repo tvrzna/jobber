@@ -1,8 +1,19 @@
 # jobber
+[![javadoc](https://javadoc.io/badge2/cz.tvrzna/jobber/0.1.0/javadoc.svg)](https://javadoc.io/doc/cz.tvrzna/jobber/0.1.0)
+
 Extremely simple Job Scheduler.
 
 ## What is jobber good for?
 In some cases Quartz could be an overkill, for simple scheduling of jobs it is unnecessary to have large library with many function, that are not useful for the specific use-case.
+
+## Installation
+```xml
+<dependency>
+    <groupId>cz.tvrzna</groupId>
+    <artifactId>jobber</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
 
 ## Example
 

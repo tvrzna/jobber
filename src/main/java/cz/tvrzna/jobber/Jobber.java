@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import cz.tvrzna.jobber.annotations.Scheduled;
 
@@ -15,8 +16,8 @@ import cz.tvrzna.jobber.annotations.Scheduled;
  * The class is simple Job Scheduler, that runs periodically any class, that
  * extends {@link AbstractJob} and have defined {@link Scheduled} annotation
  * with simplified CRON expression. <br>
- * Whole <code>Jobber</code> is <code>static</code> singleton, that requires
- * to be initialized by {@link Jobber#init(List, List)}. If jobs are correctly
+ * Whole <code>Jobber</code> is <code>static</code> singleton, that requires to
+ * be initialized by {@link Jobber#init(List, List)}. If jobs are correctly
  * loaded, next step could be starting via method {@link Jobber#start()}. This
  * starts scheduling and executing of all correct jobs in independent
  * <code>Thread</code>.<br>
@@ -87,8 +88,8 @@ public class Jobber
 	}
 
 	/**
-	 * Stops the <code>Jobber</code>. All running jobs will be finished, but
-	 * any other will be started after execution of this method.
+	 * Stops the <code>Jobber</code>. All running jobs will be finished, but any
+	 * other will be started after execution of this method.
 	 */
 	public static void stop()
 	{
@@ -250,7 +251,7 @@ public class Jobber
 	 *          the current date
 	 * @return the date
 	 */
-	private static Date parseCronExpression(String cronExpression, Date currentDate)
+	protected static Date parseCronExpression(String cronExpression, Date currentDate)
 	{
 		String[] parts = cronExpression.split(" ");
 
@@ -259,7 +260,7 @@ public class Jobber
 		currentCalendar.set(Calendar.MILLISECOND, 0);
 
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.MILLISECOND, 0);
+		cal.setTime(currentDate);
 		newCronValue(cal, Calendar.SECOND, parts[0], currentCalendar);
 		newCronValue(cal, Calendar.MINUTE, parts[1], currentCalendar);
 		newCronValue(cal, Calendar.HOUR_OF_DAY, parts[2], currentCalendar);
@@ -322,9 +323,48 @@ public class Jobber
 				}
 			}
 		}
+		else if (strValue.contains(","))
+		{
+			String[] strParts = strValue.split(",");
+			List<Integer> lstParts = new ArrayList<>();
+			for (String strPart : strParts)
+			{
+				lstParts.add(Integer.parseInt(strPart));
+			}
+			lstParts = lstParts.stream().sorted().collect(Collectors.toList());
+
+			if (lstParts.get(lstParts.size() - 1) < currentValue)
+			{
+				value = lstParts.get(0) <= maxValue ? lstParts.get(0) : maxValue;
+			}
+			else
+			{
+				Calendar cal2 = Calendar.getInstance();
+				cal2.setTime(cal.getTime());
+				cal2.set(field, value);
+				for (Integer part : lstParts)
+				{
+					cal2.set(field, part);
+					if (part > maxValue)
+					{
+						value = lstParts.get(0) <= maxValue ? lstParts.get(0) : maxValue;
+						break;
+					}
+					if (cal2.after(currentCalendar) || cal2.compareTo(currentCalendar) == 0)
+					{
+						value = part;
+						break;
+					}
+				}
+			}
+		}
 		else
 		{
 			value = Integer.parseInt(strValue);
+			if (value > maxValue)
+			{
+				value = maxValue;
+			}
 		}
 
 		cal.set(field, value);

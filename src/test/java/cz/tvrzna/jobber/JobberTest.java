@@ -94,6 +94,29 @@ public class JobberTest
 		Assertions.assertEquals(20, checkCal.get(Calendar.HOUR_OF_DAY));
 	}
 
+	@Test
+	public void testEmptyCronExpression()
+	{
+		Calendar checkCal = Calendar.getInstance();
+
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, 2020);
+		cal.set(Calendar.MONTH, 3);
+		cal.set(Calendar.DAY_OF_MONTH, 27);
+		cal.set(Calendar.HOUR_OF_DAY, 20);
+		cal.set(Calendar.MINUTE, 42);
+		cal.set(Calendar.SECOND, 36);
+
+		Date date = Jobber.parseCronExpression("", cal.getTime());
+		checkCal.setTime(date);
+		Assertions.assertEquals(36, checkCal.get(Calendar.SECOND));
+		Assertions.assertEquals(42, checkCal.get(Calendar.MINUTE));
+		Assertions.assertEquals(20, checkCal.get(Calendar.HOUR_OF_DAY));
+		Assertions.assertEquals(27, checkCal.get(Calendar.DAY_OF_MONTH));
+		Assertions.assertEquals(3, checkCal.get(Calendar.MONTH));
+		Assertions.assertEquals(2020, checkCal.get(Calendar.YEAR));
+	}
+
 	@Scheduled("* * * * * *")
 	private class TestJob2 extends AbstractJob
 	{

@@ -261,12 +261,12 @@ public class Jobber
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(currentDate);
-		newCronValue(cal, Calendar.SECOND, parts[0], currentCalendar);
-		newCronValue(cal, Calendar.MINUTE, parts[1], currentCalendar);
-		newCronValue(cal, Calendar.HOUR_OF_DAY, parts[2], currentCalendar);
-		newCronValue(cal, Calendar.DAY_OF_YEAR, parts[3], currentCalendar);
-		newCronValue(cal, Calendar.MONTH, parts[4], currentCalendar);
-		newCronValue(cal, Calendar.YEAR, parts[5], currentCalendar);
+		newCronValue(cal, Calendar.SECOND, parts.length > 1 ? parts[0] : "*", currentCalendar);
+		newCronValue(cal, Calendar.MINUTE, parts.length > 2 ? parts[1] : "*", currentCalendar);
+		newCronValue(cal, Calendar.HOUR_OF_DAY, parts.length > 3 ? parts[2] : "*", currentCalendar);
+		newCronValue(cal, Calendar.DAY_OF_YEAR, parts.length > 4 ? parts[3] : "*", currentCalendar);
+		newCronValue(cal, Calendar.MONTH, parts.length > 5 ? parts[4] : "*", currentCalendar);
+		newCronValue(cal, Calendar.YEAR, parts.length > 6 ? parts[5] : "*", currentCalendar);
 
 		return cal.getTime();
 	}

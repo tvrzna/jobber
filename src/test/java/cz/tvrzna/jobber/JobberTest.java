@@ -86,12 +86,32 @@ public class JobberTest
 
 		date = Jobber.parseCronExpression("* 30,50,45,40,20,55 * * * *", cal.getTime());
 		checkCal.setTime(date);
+		Assertions.assertEquals(0, checkCal.get(Calendar.SECOND));
 		Assertions.assertEquals(45, checkCal.get(Calendar.MINUTE));
 
 		date = Jobber.parseCronExpression("* 90,180 * * * *", cal.getTime());
 		checkCal.setTime(date);
+		Assertions.assertEquals(0, checkCal.get(Calendar.SECOND));
 		Assertions.assertEquals(59, checkCal.get(Calendar.MINUTE));
 		Assertions.assertEquals(20, checkCal.get(Calendar.HOUR_OF_DAY));
+
+		date = Jobber.parseCronExpression("15 10,45,50 16 16,28 2 *", cal.getTime());
+		checkCal.setTime(date);
+		Assertions.assertEquals(15, checkCal.get(Calendar.SECOND));
+		Assertions.assertEquals(10, checkCal.get(Calendar.MINUTE));
+		Assertions.assertEquals(16, checkCal.get(Calendar.HOUR_OF_DAY));
+		Assertions.assertEquals(16, checkCal.get(Calendar.DAY_OF_MONTH));
+		Assertions.assertEquals(2, checkCal.get(Calendar.MONTH));
+		Assertions.assertEquals(2021, checkCal.get(Calendar.YEAR));
+
+		date = Jobber.parseCronExpression("34,36,38 40,42,44 18,20,22 27,26 * *", cal.getTime());
+		checkCal.setTime(date);
+		Assertions.assertEquals(36, checkCal.get(Calendar.SECOND));
+		Assertions.assertEquals(42, checkCal.get(Calendar.MINUTE));
+		Assertions.assertEquals(20, checkCal.get(Calendar.HOUR_OF_DAY));
+		Assertions.assertEquals(27, checkCal.get(Calendar.DAY_OF_MONTH));
+		Assertions.assertEquals(3, checkCal.get(Calendar.MONTH));
+		Assertions.assertEquals(2020, checkCal.get(Calendar.YEAR));
 	}
 
 	@Test

@@ -29,6 +29,9 @@ import cz.tvrzna.jobber.annotations.Scheduled;
  */
 public class Jobber
 {
+	private final static int[] CALENDAR_MAPPING = new int[]
+	{ Calendar.SECOND, Calendar.MINUTE, Calendar.HOUR_OF_DAY, Calendar.DAY_OF_MONTH, Calendar.MONTH, Calendar.YEAR };
+
 	private static boolean loaded = false;
 	private static List<ScheduledItem> schedulerContext;
 	private static Thread jobberThread;
@@ -261,13 +264,21 @@ public class Jobber
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(currentDate);
-		newCronValue(cal, Calendar.SECOND, parts.length > 1 ? parts[0] : "*", currentCalendar);
-		newCronValue(cal, Calendar.MINUTE, parts.length > 2 ? parts[1] : "*", currentCalendar);
-		newCronValue(cal, Calendar.HOUR_OF_DAY, parts.length > 3 ? parts[2] : "*", currentCalendar);
-		newCronValue(cal, Calendar.DAY_OF_YEAR, parts.length > 4 ? parts[3] : "*", currentCalendar);
-		newCronValue(cal, Calendar.MONTH, parts.length > 5 ? parts[4] : "*", currentCalendar);
-		newCronValue(cal, Calendar.YEAR, parts.length > 6 ? parts[5] : "*", currentCalendar);
 
+		for (int i = 0; i < CALENDAR_MAPPING.length; i++)
+		{
+			boolean shifted = newCronValue(cal, CALENDAR_MAPPING[i], parts.length > i + 1 ? parts[i] : "*", currentCalendar);
+			if (shifted && i > 0)
+			{
+				for (int j = i; j > 0; j--)
+				{
+					Calendar semicalendar = Calendar.getInstance();
+					semicalendar.setTime(currentCalendar.getTime());
+					semicalendar.set(CALENDAR_MAPPING[j - 1], 0);
+					newCronValue(cal, CALENDAR_MAPPING[j - 1], parts.length > j ? parts[j - 1] : "*", semicalendar);
+				}
+			}
+		}
 		return cal.getTime();
 	}
 
@@ -283,10 +294,10 @@ public class Jobber
 	 * @param currentCalendar
 	 *          the current calendar
 	 */
-	private static void newCronValue(Calendar cal, int field, String strValue, Calendar currentCalendar)
+	private static boolean newCronValue(Calendar cal, int field, String strValue, Calendar currentCalendar)
 	{
 		int maxValue = cal.getActualMaximum(field);
-		int currentValue = cal.get(field);
+		int currentValue = currentCalendar.get(field);
 		int value = 0;
 
 		if (strValue.contains("*"))
@@ -368,5 +379,6 @@ public class Jobber
 		}
 
 		cal.set(field, value);
+		return value > currentValue;
 	}
 }

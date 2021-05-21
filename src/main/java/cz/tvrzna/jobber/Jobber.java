@@ -274,7 +274,7 @@ public class Jobber
 				{
 					Calendar semicalendar = Calendar.getInstance();
 					semicalendar.setTime(currentCalendar.getTime());
-					semicalendar.set(CALENDAR_MAPPING[j - 1], 0);
+					semicalendar.set(CALENDAR_MAPPING[j - 1], semicalendar.getActualMinimum(CALENDAR_MAPPING[j - 1]));
 					newCronValue(cal, CALENDAR_MAPPING[j - 1], parts.length > j ? parts[j - 1] : "*", semicalendar);
 				}
 			}

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cz.tvrzna</groupId>
 	<artifactId>jobber</artifactId>
-	<version>0.2.0</version>
+	<version>0.2.1</version>
 
 	<name>jobber</name>
 	<description>Extremely simple Job Scheduler</description>

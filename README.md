@@ -1,5 +1,5 @@
 # jobber
-[![javadoc](https://javadoc.io/badge2/cz.tvrzna/jobber/0.2.1/javadoc.svg)](https://javadoc.io/doc/cz.tvrzna/jobber/0.2.1)
+[![javadoc](https://javadoc.io/badge2/cz.tvrzna/jobber/0.2.1/javadoc.svg)](https://javadoc.io/doc/cz.tvrzna/jobber/0.2.2)
 
 Extremely simple Job Scheduler.
 
@@ -11,7 +11,7 @@ In some cases Quartz could be an overkill, for simple scheduling of jobs it is u
 <dependency>
     <groupId>cz.tvrzna</groupId>
     <artifactId>jobber</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
 </dependency>
 ```
 

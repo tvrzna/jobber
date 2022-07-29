@@ -260,7 +260,6 @@ public class Jobber
 
 		Calendar currentCalendar = Calendar.getInstance();
 		currentCalendar.setTime(currentDate);
-		currentCalendar.set(Calendar.MILLISECOND, 0);
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(currentDate);

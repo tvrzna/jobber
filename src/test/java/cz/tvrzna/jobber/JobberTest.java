@@ -75,7 +75,7 @@ public class JobberTest
 		cal.set(Calendar.DAY_OF_MONTH, 27);
 		cal.set(Calendar.HOUR_OF_DAY, 20);
 		cal.set(Calendar.MINUTE, 42);
-		cal.set(Calendar.SECOND, 36);
+		cal.set(Calendar.SECOND, 35);
 
 		Date date;
 
@@ -125,7 +125,7 @@ public class JobberTest
 		cal.set(Calendar.DAY_OF_MONTH, 27);
 		cal.set(Calendar.HOUR_OF_DAY, 20);
 		cal.set(Calendar.MINUTE, 42);
-		cal.set(Calendar.SECOND, 36);
+		cal.set(Calendar.SECOND, 35);
 
 		Date date = Jobber.parseCronExpression("", cal.getTime());
 		checkCal.setTime(date);
